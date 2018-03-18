@@ -1,0 +1,113 @@
+﻿<Window x:Class="Lab2.AddBookWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Lab2"
+        mc:Ignorable="d"
+        Title="Книги" Height="450" Width="500" MinHeight="450" MinWidth="500"
+        Icon="{DynamicResource ResourceKey=WindowIcon}">
+    <Grid x:Name="border">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="3"/>
+            <RowDefinition/>
+            <RowDefinition Height="3"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3"/>
+            <ColumnDefinition />
+            <ColumnDefinition Width="3"/>
+        </Grid.ColumnDefinitions>
+        <Border Grid.Column="0" Grid.RowSpan="3" Background="gray"/>
+        <Border Grid.Column="2" Grid.RowSpan="3" Background="gray"/>
+        <Border Grid.Row="2" Grid.ColumnSpan="3" Background="gray"/>
+        <Border Grid.Row="0" Grid.ColumnSpan="3" Background="gray"/>
+        <Grid Grid.Column="1" Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="200"/>
+                <RowDefinition/>
+                <RowDefinition Height="50"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="1" Margin="10">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2"/>
+                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="2"/>
+                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="2"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="2"/>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition/>
+                        <RowDefinition Height="2"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Column="1" Grid.Row="1" Text="Авторы:" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5"/>
+                    <TextBlock Grid.Column="4" Grid.Row="1" Text="Теги:" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5"/>
+                    <ComboBox x:Name="authorsComboBox" Grid.Column="2" Grid.Row="1" Margin="0 5 5 5" SelectionChanged="authorsComboBox_SelectionChanged"/>
+                    <ComboBox x:Name="tagsComboBox" Grid.Column="5" Grid.Row="1" Margin="0 5 5 5" SelectionChanged="tagsComboBox_SelectionChanged"/>
+                    <ListView x:Name="authorsPanel" Grid.Row="2" Grid.ColumnSpan="3"  ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="5">
+                        <ListView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel IsItemsHost="True" />
+                            </ItemsPanelTemplate>
+                        </ListView.ItemsPanel>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Label Background="Gray" Content="{Binding Name}" Margin="0" MouseLeftButtonDown="Label_MouseLeftButtonDown"/>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+
+                    <ListView x:Name="tagsPanel" Grid.Row="2"  Grid.Column="4" Grid.ColumnSpan="2"  ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="5">
+                        <ListView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel IsItemsHost="True" />
+                            </ItemsPanelTemplate>
+                        </ListView.ItemsPanel>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Label Background="Gray" Content="{Binding Tag}" Margin="0" MouseLeftButtonDown="Label_MouseLeftButtonDown_1"/>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                    <Border Grid.Column="3" Grid.RowSpan="4" Background="Gray"/>
+                    <Border Grid.Row="0" Grid.ColumnSpan="7" Background="Gray"/>
+                    <Border Grid.Column="0" Grid.RowSpan="4" Background="Gray"/>
+                    <Border Grid.Column="6" Grid.RowSpan="4" Background="Gray"/>
+                    <Border Grid.Row="4" Grid.ColumnSpan="7" Background="Gray"/>
+                </Grid>
+
+            </Grid>
+            <Grid Grid.Row="0" Margin="10 0 10 0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="40"/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="Номер книги (ISBN):" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center"/>
+                <TextBlock Text="Название:" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center"/>
+                <TextBlock Text="Год написания:" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center"/>
+                <TextBlock Text="Количество страниц:" Grid.Column="0" Grid.Row="3" VerticalAlignment="Center"/>
+                <TextBlock Text="Издательство:" Grid.Column="0" Grid.Row="4" VerticalAlignment="Center"/>
+                <TextBox x:Name="bookISBN" Grid.Column="1" Grid.Row="0" Margin="0 5 0 5" TextWrapping="Wrap" Text="{Binding ISBN}"/>
+                <TextBox x:Name="bookName" Grid.Column="1" Grid.Row="1" Margin="0 5 0 5" TextWrapping="Wrap" Text="{Binding Name}"/>
+                <TextBox x:Name="bookYear" Grid.Column="1" Grid.Row="2" Margin="0 5 0 5" TextWrapping="Wrap" Text="{Binding Year}"/>
+                <TextBox x:Name="bookPage" Grid.Column="1" Grid.Row="3" Margin="0 5 0 5" TextWrapping="Wrap" Text="{Binding PageNumber}"/>
+                <ComboBox x:Name="housesComboBox" Grid.Column="1" Grid.Row="4" Margin="0 5 0 5" Width="200" HorizontalAlignment="Left" SelectedItem="{Binding Path=House}" SelectionChanged="housesComboBox_SelectionChanged"/>
+            </Grid>
+            <Button Grid.Row="2" Width="100" Height="30" Content="Отмена" Margin="0 5 10 5" HorizontalAlignment="Right" Click="Button_Click"/>
+            <Button Grid.Row="2" Width="100" Height="30" Content="OK" Margin="0 5 130 5" HorizontalAlignment="Right" Click="Button_Click_1"/>
+        </Grid>
+    </Grid>
+    
+</Window>

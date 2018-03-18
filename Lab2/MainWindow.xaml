@@ -1,0 +1,242 @@
+﻿<Window x:Class="Lab2.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Lab2"
+        xmlns:MaterialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d"
+        Title="Электронная библиотека" MinWidth="770" MinHeight="400"
+        Closing="Window_Closing">
+    <Window.Resources>
+        <local:HouseConverter x:Key="houseConverter"/>
+        <local:AuthorCollectionConverter x:Key="authorCollectionConverter"/>
+        <local:BookCollectionConverter x:Key="bookCollectionConverter"/>
+        <local:StringCollectionConverter x:Key="stringCollectionConverter"/>
+        <local:DateConverter x:Key="dateConverter"/>
+    </Window.Resources>
+    <Grid x:Name="mainGrid">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3"/>
+            <ColumnDefinition MinWidth="700"/>
+            <ColumnDefinition Width="3"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition/>
+            <RowDefinition Height="3"/>
+        </Grid.RowDefinitions>
+        <Menu x:Name="MainMenu" Height="25" VerticalAlignment="Top" Grid.Row="0" Grid.Column="1">
+            <MenuItem Header="Файлы" Height="25">
+                <MenuItem Header="Новая библиотека..." Click="MenuItem_Click_7"/>
+                <MenuItem Header="Открыть..." Click="MenuItem_Click_6">
+                </MenuItem>
+                <MenuItem Header="Сохранить" Click="MenuItem_Click_8"/>
+                <MenuItem Header="Сохранить как..." Click="MenuItem_Click_5"/>
+                <Separator/>
+                <MenuItem Header="Выход" Click="MenuItem_Click_4"/>
+            </MenuItem>
+            <MenuItem Header="Правка" Height="25">
+                <MenuItem Header="Добавить">
+                    <MenuItem Header="Книга..." Click="MenuItem_Click"/>
+                    <MenuItem Header="Автор..." Click="MenuItem_Click_1"/>
+                    <MenuItem Header="Издательство..." Click="MenuItem_Click_2"/>
+                    <MenuItem Header="Теги..." Click="MenuItem_Click_3"/>
+                </MenuItem>
+                <MenuItem Header="Сортировка" Height="25">
+                    <MenuItem Header="Книг по ISBN" Click="MenuItem_Click_10"/>
+                    <MenuItem Header="Авторов по имени" Click="MenuItem_Click_9"/>
+                    <MenuItem Header="Издательств по имени" Click="MenuItem_Click_11"/>
+                </MenuItem>
+                <MenuItem Header="Поиск">
+                    <MenuItem Header="Исходные коллекции" Click="MenuItem_Click_21"/>
+                    <MenuItem Header="Поиск..." Click="MenuItem_Click_22"/>
+                </MenuItem>
+            </MenuItem>
+            <MenuItem Header="Дополнительно" Height="25">
+                <MenuItem Header="Темы">
+                    <MenuItem Header="Material Design" Click="MenuItem_Click_18"/>
+                    <MenuItem Header="Обычная" Click="MenuItem_Click_19"/>
+                </MenuItem>
+            </MenuItem>
+            <MenuItem Header="Графика и Анимация" Height="25">
+                <MenuItem Header="Ключевые кадры (tabItem)" Click="tabItemClick"/>
+                <MenuItem Header="График" Click="MenuItem_Click_20"/>
+            </MenuItem>
+        </Menu>
+        <Border Grid.Row="1" Background="Gray" Height="3" Grid.ColumnSpan="3"/>
+        <Border Grid.Row="3" Background="Gray" Height="3" Grid.ColumnSpan="3"/>
+        <Border Grid.Column="0" Grid.Row="1" Background="Gray" Width="3" Grid.RowSpan="3"/>
+        <Border Grid.Column="2" Grid.Row="1" Background="Gray" Width="3" Grid.RowSpan="3"/>
+        <TabControl x:Name="mainTab" Grid.Column="1" Grid.Row="2">
+            <TabItem Header="Книги" x:Name="tabItem1">
+                <TabItem.Content>
+                    <Grid x:Name="bookPageGrid">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition Height="40"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="0.8*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Row="1" Width="420" HorizontalAlignment="Center">
+                            <Button Content="Начало" Width="80" Height="30" Margin="10 5 0 5" HorizontalAlignment="Left" Click="Button_Click_3" />
+                            <Button Content="Пред" Width="80" Height="30" Margin="100 5 0 5" HorizontalAlignment="Left" Click="Button_Click_2"/>
+                            <Button Content="След"  Width="80" Height="30" Margin="0 5 100 5" HorizontalAlignment="Right" Click="Button_Click"/>
+                            <Button Content="Конец" Width="80" Height="30" Margin="0 5 10 5" HorizontalAlignment="Right" Click="Button_Click_1"/>
+                            <Label Grid.Row="1" HorizontalAlignment="Center"  VerticalAlignment="Center" FontSize="16" Content="{Binding Item}"/>
+                        </Grid>
+                        <ScrollViewer Grid.Column="0">
+                            <ListBox x:Name="booksCollection" SelectionChanged="booksCollection_SelectionChanged" MouseDoubleClick="booksCollection_MouseDoubleClick">
+                                <ListBox.ContextMenu>
+                                    <ContextMenu>
+                                        <MenuItem Header="Открыть" Click="MenuItem_Click_12"/>
+                                        <MenuItem Header="Удалить" Click="MenuItem_Click_13"/>
+                                    </ContextMenu>
+                                </ListBox.ContextMenu>
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Path=Name}"/>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </ScrollViewer>
+                        <Grid x:Name="bookGrid" Grid.Column="1" Margin="10" VerticalAlignment="Top" >
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="40" />
+                                <RowDefinition Height="40"/>
+                                <RowDefinition Height="40"/>
+                                <RowDefinition Height="40"/>
+                                <RowDefinition Height="60"/>
+                                <RowDefinition Height="60"/>
+                                <RowDefinition Height="2"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="130"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Название: " Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"/>
+                            <TextBlock Text="Год издания: " Grid.Row="1" Grid.Column="0" VerticalAlignment="Center"/>
+                            <TextBlock Text="Количество страниц: " Grid.Row="2" Grid.Column="0" VerticalAlignment="Center"/>
+                            <TextBlock Text="Издательство: " Grid.Row="3" Grid.Column="0" VerticalAlignment="Center"/>
+                            <TextBlock Text="Теги: " Grid.Row="4" Grid.Column="0" VerticalAlignment="Center"/>
+                            <TextBlock Text="Авторы: " Grid.Row="5" Grid.Column="0" VerticalAlignment="Center"/>
+                            <TextBox x:Name="bookName" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Text="{Binding Name}"/>
+                            <TextBox x:Name="bookYear" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Text="{Binding Year}"/>
+                            <TextBox x:Name="bookPage" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Text="{Binding PageNumber}"/>
+                            <TextBox x:Name="bookHouse" Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" Text="{Binding House, Converter={StaticResource houseConverter}}" />
+                            <TextBox x:Name="bookTags" Grid.Row="4"  Grid.Column="1" VerticalAlignment="Center" Text="{Binding Tags, Converter={StaticResource stringCollectionConverter}, Mode=OneWay}" TextWrapping="Wrap"  ScrollViewer.VerticalScrollBarVisibility="Auto" Margin="0 5 0 5" Height="40" IsReadOnly="True"/>
+                            <TextBox x:Name="bookAuthors" Grid.Row="5" Grid.Column="1" VerticalAlignment="Center" Text="{Binding Authors, Converter={StaticResource authorCollectionConverter}, Mode=OneWay}" TextWrapping="Wrap"  ScrollViewer.VerticalScrollBarVisibility="Auto" Margin="0 5 0 5" Height="40" IsReadOnly="True"/>
+                        </Grid>
+                    </Grid>
+                </TabItem.Content>
+            </TabItem>
+            <TabItem Header="Авторы" x:Name="tabItem2">
+                <TabItem.Content>
+                    <Grid x:Name="authorPageGrid">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="40"/>
+                        </Grid.RowDefinitions>
+                        <Grid Grid.Row="1" Width="420" HorizontalAlignment="Center">
+                            <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center"  VerticalAlignment="Center" FontSize="16" Content="{Binding Item}"/>
+                            <Button Content="Начало"  Width="80" Height="30" Margin="10 5 0 5" HorizontalAlignment="Left" Click="Button_Click_8"/>
+                            <Button Content="Пред"  Width="80" Height="30" Margin="100 5 0 5" HorizontalAlignment="Left" Click="Button_Click_9"/>
+                            <Button Content="След"  Width="80" Height="30" Margin="0 5 100 5" HorizontalAlignment="Right" Click="Button_Click_10"/>
+                            <Button Content="Конец"  Width="80" Height="30" Margin="0 5 10 5" HorizontalAlignment="Right" Click="Button_Click_11"/>
+                        </Grid>
+                        <ScrollViewer Grid.Row="0" Margin="0,-2,0,2">
+                            <ListBox x:Name="authorsCollection" MouseDoubleClick="authorsCollection_MouseDoubleClick">
+                                <ListBox.ContextMenu>
+                                    <ContextMenu>
+                                        <MenuItem Header="Открыть" Click="MenuItem_Click_14"/>
+                                        <MenuItem Header="Удалить" Click="MenuItem_Click_15"/>
+                                    </ContextMenu>
+                                </ListBox.ContextMenu>
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid Margin="5">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition/>
+                                                <RowDefinition/>
+                                                <RowDefinition/>
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="120"/>
+                                                <ColumnDefinition Width="120"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Image  Grid.Column="0" Grid.RowSpan="3" Margin="10" Width="100" Height="150" Source="{Binding Path=Photo}"/>
+                                            <TextBlock Grid.Column="1" Grid.Row="0" Text="Имя:" Height="30" VerticalAlignment="Center"/>
+                                            <TextBlock Grid.Column="1" Grid.Row="1" Text="Дата рождения:" Height="30" VerticalAlignment="Center"/>
+                                            <TextBlock Grid.Column="1" Grid.Row="2" Text="Книги:" Height="30" VerticalAlignment="Center"/>
+                                            <TextBlock Grid.Column="2" Grid.Row="0" Text="{Binding Name}" Height="30" VerticalAlignment="Center"/>
+                                            <TextBlock Grid.Column="2" Grid.Row="1" Text="{Binding Date, Converter={StaticResource dateConverter}}" Height="30" VerticalAlignment="Center"/>
+                                            <TextBlock Grid.Column="2" Grid.Row="2" Text="{Binding Books, Converter={StaticResource bookCollectionConverter}}" Height="30" VerticalAlignment="Center"/>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </ScrollViewer>
+                    </Grid>
+                    
+                </TabItem.Content>
+            </TabItem>
+            <TabItem Header="Издательства" x:Name="tabItem3">
+                <TabItem.Content>
+                    <Grid x:Name="housePageGrid">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition Height="40"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="0.8*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Row="1" Width="420" HorizontalAlignment="Center">
+                            <Button Content="Начало" Width="80" Height="30" Margin="10 5 0 5" HorizontalAlignment="Left" Click="Button_Click_4"/>
+                            <Button Content="Пред" Width="80" Height="30" Margin="100 5 0 5" HorizontalAlignment="Left" Click="Button_Click_5"/>
+                            <Button Content="След" Width="80" Height="30" Margin="0 5 100 5" HorizontalAlignment="Right" Click="Button_Click_6"/>
+                            <Button Content="Конец" Width="80" Height="30" Margin="0 5 10 5" HorizontalAlignment="Right" Click="Button_Click_7"/>
+                            <Label Grid.Row="1" HorizontalAlignment="Center"  VerticalAlignment="Center" FontSize="16" Content="{Binding Item}"/>
+                        </Grid>
+                        <ScrollViewer Grid.Column="0">
+                            <ListBox x:Name="housesCollection" SelectionChanged="housesCollection_SelectionChanged" MouseDoubleClick="housesCollection_MouseDoubleClick">
+                                <ListBox.ContextMenu>
+                                    <ContextMenu>
+                                        <MenuItem Header="Открыть" Click="MenuItem_Click_16"/>
+                                        <MenuItem Header="Удалить" Click="MenuItem_Click_17"/>
+                                    </ContextMenu>
+                                </ListBox.ContextMenu>
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Path=Name}"/>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </ScrollViewer>
+                        <Grid x:Name="housesGrid" Grid.Column="1" Margin="5" Height="160" VerticalAlignment="Top">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="40"/>
+                                <RowDefinition Height="40"/>
+                                <RowDefinition Height="80"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Название: " Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"/>
+                            <TextBlock Text="Город: " Grid.Row="1" Grid.Column="0" VerticalAlignment="Center"/>
+                            <TextBlock Text="Книги: " Grid.Row="2" Grid.Column="0" VerticalAlignment="Center"/>
+                            <TextBox x:Name="houseName" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Text="{Binding Name}"/>
+                            <TextBox x:Name="houseTown" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Text="{Binding Town}"/>
+                            <TextBox x:Name="houseBooks" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Text="{Binding Books, Converter={StaticResource bookCollectionConverter}, Mode=OneWay}" IsReadOnly="True" Height="60" TextWrapping="Wrap"/>
+                        </Grid>
+                    </Grid>
+                </TabItem.Content>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>
